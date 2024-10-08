@@ -64,8 +64,6 @@ const Transactions = () => {
     fetchEvents();
   }, [buyerAddress]);
 
-console.log(approved, allProduct)
-
   return (
     <main>
        <section className='flex flex-col lg:flex-row md:flex-row bg-[#0C3B45] rounded-[20px] w-[100%] text-white'>
