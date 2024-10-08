@@ -46,7 +46,7 @@ const CreateSellerProfile = () => {
         <p className='flex justify-between my-4'>Location <span>{info.location}</span></p>
         <p className='flex justify-between my-4'>Products <span>{info.product}</span></p>
         <p className='flex justify-between my-4'>Seller's wallet address: <span>{truncateAddress(info.address)}</span></p>
-        <p className='flex justify-between my-4 font-bold'>Payment Total: <span>{convertToWholeNumber(formatUnits(info.payment))}tCORE</span> </p>
+        <p className='flex justify-between my-4 font-bold'>Payment Total: <span>{convertToWholeNumber(formatUnits(info.payment))}ETH</span> </p>
        {info.address === address && ( <EditProfile id={Number(info.id)} />)}
         </div>
         )

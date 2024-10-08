@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { readOnlyProvider } from "../../constants/providers";
 import { getGreenEarnContract } from "../../constants/contract";
 import { formatUnits } from 'ethers';
@@ -9,15 +9,24 @@ import UseGetAllProduct from "../../Hooks/UseGetAllProduct";
 import useGetSeller from "../../Hooks/useGetSeller";
 import emptyPurchase from "../../assets/order.png"
 import ApprovePayment from "../../components/ApprovePayment";
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 
 const Transactions = () => {
   const navigate = useNavigate();
   const allSeller = useGetSeller();
   const { address } = useWeb3ModalAccount();
-  const allProduct = UseGetAllProduct()
+  const allProduct = UseGetAllProduct();
+  const [value, setValue] = React.useState('1');
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
   const [purchase, setPurchase] = useState()
-  // const [newData, setNewData] = useState()
+  const [approved, setApproved] = useState([])
 
   const [buyerAddress, setBuyerAddress] = useState(`${address}`);
   const userSeller = allSeller.find((data) => data?.address === address);
@@ -25,10 +34,12 @@ const Transactions = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       const contract = getGreenEarnContract(readOnlyProvider)
-      const deploymentBlockNumber = 15552507; 
+      const deploymentBlockNumber = 16222545; 
 
       const filter = contract.filters.ProductBought(buyerAddress);
       const events = await contract.queryFilter(filter, deploymentBlockNumber, 'latest'); 
+      const approveFilter = contract.filters.PaymentApproved(buyerAddress);
+      const approveEvent = await contract.queryFilter(approveFilter, deploymentBlockNumber, 'latest')
 
       const purchases = events.map(event => event.args);
       const converted = purchases?.map((item, index)=>{
@@ -38,16 +49,22 @@ const Transactions = () => {
             quantity: Number(item[2]),
       }      
     }) 
+    const approvedItem = approveEvent.map(event => event.args);
+    const convertedItem = approvedItem?.map((item, index)=>{
+      return{
+          address: item[0],
+          id: Number(item[1]),
+          amount: Number(item[2]),
+    }      
+  }) 
       setPurchase(converted);
+      setApproved(convertedItem);
     };
 
     fetchEvents();
   }, [buyerAddress]);
 
-  const convertToWholeNumber = (formattedNumber) => {
-    const number = parseFloat(formattedNumber);
-    return number.toFixed();
-  };
+console.log(approved, allProduct)
 
   return (
     <main>
@@ -80,6 +97,15 @@ const Transactions = () => {
         )}
       </div>
     </section>
+    <Box sx={{ width: '100%', typography: 'body1' }}>
+      <TabContext value={value}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tab label="Purchased Items" value="1" />
+            <Tab label="Approved Items" value="2" />
+          </TabList>
+        </Box>
+        <TabPanel value="1">
     <section className="text-[#0F160F] flex lg:flex-row md:flex-row flex-col justify-between">
     {purchase?.length === 0 ? (
       <div className="flex flex-col items-center w-full text-[rgb(15,22,15)]">
@@ -95,16 +121,47 @@ const Transactions = () => {
                 <div>
                   <img src={userPurchase.image} alt="" className="w-[300px] h-[300px] mb-4" />
                   <p><strong>Product Name:</strong> {userPurchase.name}</p>
-                  <p className='flex justify-between my-4 font-bold'>Price <span>{convertToWholeNumber(formatUnits(userPurchase.price))}ETH</span> </p>
+                  <p className='flex justify-between my-4 font-bold'>Price <span>{formatUnits(userPurchase.price)}ETH</span> </p>
                 </div>
               ) : (
                 <p>Product details not available.</p>
               )}
-              <ApprovePayment id={p.id} index={index} />
+              {approved?.map((item) => {
+        return item.address !== address ? (
+          <ApprovePayment key={item.id} id={p.id} index={index} />
+        ) : null;
+      })}
             </div>
           );
         }))}
       </section>
+      </TabPanel>
+        <TabPanel value="2">
+        <section className="text-[#0F160F] flex lg:flex-row md:flex-row flex-col justify-between">
+    {approved?.length === 0 ? (
+      <div className="flex flex-col items-center w-full text-[rgb(15,22,15)]">
+          <img src={emptyPurchase} alt="" />
+          <p>No Approved Payment yet</p>
+          </div>
+        ) : (approved.map((p, index) => {
+          const userApproval = allProduct.find((data) => data?.id === p.id);
+          return (
+            <div key={index} className="border p-4 mb-4 rounded-lg shadow-md lg:w-[32%] md:w-[32%] w-[100%]">
+              {userApproval ? (
+                <div>
+                  <img src={userApproval.image} alt="" className="w-[300px] h-[300px] mb-4" />
+                  <p className='flex justify-between my-4 font-bold'>Price <span>{formatUnits(userApproval.price)}ETH</span> </p>
+                </div>
+              ) : (
+                <p>Product details not available.</p>
+              )}
+            </div>
+          );
+        }))}
+      </section>
+        </TabPanel>
+      </TabContext>
+    </Box>
     </main>
   )
 }

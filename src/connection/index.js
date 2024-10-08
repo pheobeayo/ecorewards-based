@@ -6,12 +6,12 @@ export const isSupportedChain = (chainId) =>
   Number(chainId) === SUPPORTED_CHAIN;
 
 const BaseSepolia = {
-  chainId: 84532,
-  name: 'base',
-  currency: 'ETH',
-  explorerUrl: 'https://sepolia.basescan.org/',
-  rpcUrl: import.meta.env.VITE_INFURA_RPC
-}
+  chainId: SUPPORTED_CHAIN,
+  name: "Base Sepolia",
+  currency: "ETH",
+  explorerUrl: "https://sepolia.basescan.org/",
+  rpcUrl: import.meta.env.VITE_INFURA_RPC,
+};
 
 const metadata = {
   name: 'My Website',
@@ -23,11 +23,10 @@ const metadata = {
 export const configWeb3Modal = () => createWeb3Modal({
   ethersConfig: defaultConfig({ metadata }),
   chains: [BaseSepolia],
-  projectId: import.meta.env.VITE_PROJECT_ID,
+  projectId: import.meta.env.VITE_PROJECTID,
   enableAnalytics: false,
   themeVariables: {
     '--w3m-accent': '#3F9AAE',
-    '--w3m-color-mix-strength': '40',
     '--w3m-border-radius-master': '10'
   }
 })

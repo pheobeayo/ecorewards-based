@@ -65,7 +65,6 @@ const ApprovePayment = ({id, index}) => {
 
   return (
     <div>
-    <div>
       <button className="bg-white text-[#0C3B45] border border-[#0C3B45] py-2 px-4 rounded-lg lg:text-[20px] md:text-[20px] font-bold text-[16px] w-[100%] my-2 hover:bg-bg-ash hover:text-darkGrey hover:font-bold" onClick={handleOpen}>Approve Payment</button>
     <Modal
         open={open}
@@ -84,7 +83,6 @@ const ApprovePayment = ({id, index}) => {
       </Modal>
       
     </div>
-  </div>
   )
 }
 
