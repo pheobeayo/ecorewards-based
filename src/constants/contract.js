@@ -16,10 +16,3 @@ export const getGreenEarnContract = (providerOrSigner) =>
         earnAbi,
         providerOrSigner
     );
-
-export const getBaseNameContract = (providerOrSigner) =>
-    new ethers.Contract(
-        import.meta.env.VITE_BASENAME_CONTRACT,
-        baseAbi,
-        providerOrSigner
-    );
