@@ -10,6 +10,7 @@ import { BsReceipt } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 // import { useDisconnect } from "@web3modal/ethers/react";
 import logo from '../assets/logo.svg'
+import Basename from "./Basename";
 
 const MobileSidebar = () => {
   const [isOpen, setOpen] = useState(false);
@@ -28,7 +29,7 @@ const MobileSidebar = () => {
       <Hamburger toggled={isOpen} toggle={setOpen} color="#427142" direction="right"/>
       {isOpen && (
         <div className="bg-[#C7D5D8] text-[rgb(15,22,15)] p-8 py-12 h-[100vh] w-[100%] absolute top-20 left-0 bg-baseBlack/70 z-50">
-            <w3m-button />
+            <Basename />
           <NavLink
             to="/dashboard"
             className="text-[14px] text-[#0F160F] flex items-center py-4 my-4 px-4 hover:text-[#015C28]"

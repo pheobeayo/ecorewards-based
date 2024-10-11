@@ -13,6 +13,14 @@ const BaseSepolia = {
   rpcUrl: import.meta.env.VITE_INFURA_RPC,
 };
 
+const BaseMainnet = {
+  chainId: 8453,
+  name: "Base mainnet",
+  currency: "ETH",
+  explorerUrl: "https://basescan.org/",
+  rpcUrl: import.meta.env.VITE_INFURA_MAINNET_RPC,
+};
+
 const metadata = {
   name: 'My Website',
   description: 'My Website description',
@@ -22,7 +30,7 @@ const metadata = {
 
 export const configWeb3Modal = () => createWeb3Modal({
   ethersConfig: defaultConfig({ metadata }),
-  chains: [BaseSepolia],
+  chains: [BaseSepolia, BaseMainnet],
   projectId: import.meta.env.VITE_PROJECTID,
   enableAnalytics: false,
   themeVariables: {
