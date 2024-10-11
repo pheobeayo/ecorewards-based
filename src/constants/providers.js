@@ -1,6 +1,4 @@
 import { ethers } from "ethers";
-const chainName = 'core'
-const chainId = 1115;
 
 // read only provider pointing to mumbai. It allows read only access to the mumbai blockchain
 export const readOnlyProvider = new ethers.JsonRpcProvider(
