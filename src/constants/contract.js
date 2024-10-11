@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import earnAbi from "./earnAbi.json"
 import tokenAbi from './tokenAbi.json'
-import baseAbi from './baseAbi.json'
 
 export const getGreenTokenContract = (providerOrSigner) =>
     new ethers.Contract(
