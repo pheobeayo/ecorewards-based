@@ -55,11 +55,11 @@ These deployments provide the foundation for secure, transparent transactions wi
 
 ## Demo and MVP:
 
-MVP: 
+`MVP: https://ecorewards-based.vercel.app/ `
 
 
 Demo Video: 
 
-Repo:  
+`Repo:  https://github.com/pheobeayo/ecorewards-based `
 
 Pitch Slide: https://www.canva.com/design/DAGRaEgPm2k/hk0FTDd_3MauN9KbeRwBJw/view?utm_content=DAGRaEgPm2k&utm_campaign=designshare&utm_medium=link&utm_source=editor
